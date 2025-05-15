@@ -33,7 +33,11 @@ const OverView = () => {
         "Content-Type": "multipart/form-data"
       };
       const apiResponse = await addModel(payload, reqHeaders);
-      console.log(apiResponse.data);
+      if(apiResponse.status==201){
+        alert("Added Successfully")
+      }else{
+        alert("Something Went wrong")
+      }
     } else {
       alert("Please fill out all fields");
     }
@@ -93,17 +97,12 @@ const OverView = () => {
                         <div className="file-info">
                           <span className="file-selected-text">File Ready for Upload</span>
                           <p className="file-name">{data.glbImage.name}</p>
-                          <p className="file-size">{Math.round(data.glbImage.size / 1024)} KB</p>
                         </div>
                       </div>
                     ) : (
                       <div className="file-upload-content">
                         <i className="fas fa-cloud-upload-alt file-upload-icon"></i>
                         <p className="file-upload-text">Browse or Drag & Drop GLB/GLTF File</p>
-                        <div className="file-requirements">
-                          <span className="requirement-item"><i className="fas fa-check-circle"></i> Max 50MB</span>
-                          <span className="requirement-item"><i className="fas fa-check-circle"></i> .glb or .gltf</span>
-                        </div>
                       </div>
                     )}
                   </div>
