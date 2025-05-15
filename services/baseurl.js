@@ -1,2 +1,2 @@
-const baseURL='http://localhost:3000'
+const baseURL=`https://threed-model-server.onrender.com`
 export default baseURL
