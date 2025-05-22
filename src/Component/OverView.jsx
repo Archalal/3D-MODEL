@@ -100,15 +100,16 @@ console.log(data.glbImage);
                   <input
                     type="file"
                     accept=".glb,.gltf"
-                   onChange={(e) => {
-                    const file = e.target.files[0];
-                    if (file && !["model/gltf-binary", "model/gltf+json"].includes(file.type)) {
-                      alert("Invalid file type. Please upload a .glb or .gltf file.");
-                      return;
-                    }
-                    setData({ ...data, glbImage: file });
-                  }}
+                    onChange={(e) => {
+                        if(e.target.value.files[0].name.toLowerCase().endsWith(".glb")){
+                        setData({ ...data, glbImage: e.target.files[0] })
+                      }else{
+                        alert("Please enter valid type")
+                      }
 
+                    }
+                    
+                    }
                     style={{ display: "none" }}
                     required
                   />
