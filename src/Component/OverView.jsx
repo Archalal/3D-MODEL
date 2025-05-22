@@ -15,6 +15,8 @@ const OverView = () => {
     name: "",
     glbImage: null
   });
+console.log(data.glbImage);
+
 
   useEffect(() => {
     if (data.glbImage) {
@@ -24,24 +26,36 @@ const OverView = () => {
     }
   }, [data.glbImage]);
 
-  const submit = async () => {
-    if (data.name && data.glbImage) {
+ 
+   const submit = async () => {
+  if (data.name && data.glbImage) {
+    try {
       const payload = new FormData();
       payload.append("name", data.name);
       payload.append("glbImage", data.glbImage);
+
       const reqHeaders = {
         "Content-Type": "multipart/form-data"
       };
+
       const apiResponse = await addModel(payload, reqHeaders);
-      if(apiResponse.status==201){
-        alert("Added Successfully")
-      }else{
-        alert("Something Went wrong")
+      if (apiResponse.status === 201) {
+        alert("Added Successfully");
+        setData({ name: "", glbImage: null });
+        setPreview("");
+      } else {
+        alert("Upload failed. Please try again.");
       }
-    } else {
-      alert("Please fill out all fields");
+    } catch (err) {
+      console.error("Upload error:", err);
+      alert("Something went wrong. Please check the console for details.");
     }
-  };
+  } else {
+    alert("Please fill out all fields");
+  }
+};
+
+  
 
   return (
     <div className="model-upload-container">
@@ -86,7 +100,15 @@ const OverView = () => {
                   <input
                     type="file"
                     accept=".glb,.gltf"
-                    onChange={(e) => setData({ ...data, glbImage: e.target.files[0] })}
+                   onChange={(e) => {
+                    const file = e.target.files[0];
+                    if (file && !["model/gltf-binary", "model/gltf+json"].includes(file.type)) {
+                      alert("Invalid file type. Please upload a .glb or .gltf file.");
+                      return;
+                    }
+                    setData({ ...data, glbImage: file });
+                  }}
+
                     style={{ display: "none" }}
                     required
                   />
@@ -133,7 +155,7 @@ const OverView = () => {
                   <directionalLight position={[10, 10, 5]} intensity={1} />
                   <Suspense fallback={null}>
                     <ModelViewer url={preview} />
-                    <OrbitControls enableZoom={true} />
+                    <OrbitControls enableZoom={true} autoRotate />
                   </Suspense>
                 </Canvas>
               </div>
