@@ -99,9 +99,9 @@ console.log(data.glbImage);
                 <label className="file-upload-label">
                   <input
                     type="file"
-                    accept=".glb,.gltf"
+                    // accept=".glb,.gltf"
                     onChange={(e) => {
-                        if(e.target.value.files[0].name.toLowerCase().endsWith(".glb")){
+                        if(e.target.files[0].name.toLowerCase().endsWith(".glb")){
                         setData({ ...data, glbImage: e.target.files[0] })
                       }else{
                         alert("Please enter valid type")
