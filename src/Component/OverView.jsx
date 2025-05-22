@@ -99,17 +99,18 @@ console.log(data.glbImage);
                 <label className="file-upload-label">
                   <input
                     type="file"
-                    // accept=".glb,.gltf"
-                    onChange={(e) => {
-                        if(e.target.files[0].name.toLowerCase().endsWith(".glb")){
-                        setData({ ...data, glbImage: e.target.files[0] })
-                      }else{
-                        alert("Please enter valid type")
-                      }
+                    accept=".glb"
+                onChange={(e) => {
+                const file = e.target.files[0];
+                if (!file.name.toLowerCase().endsWith(".glb")) {
+                  alert("Please select a .glb file");
+                } else if (file.size > 15* 1024 * 1024) {
+                  alert("File is too large. Upload a file under 10MB.");
+                } else {
+                  setData({ ...data, glbImage: file });
+                }
+              }}
 
-                    }
-                    
-                    }
                     style={{ display: "none" }}
                     required
                   />
@@ -151,7 +152,7 @@ console.log(data.glbImage);
                 <h2 className="preview-title">Model Preview</h2>
               </div>
               <div className="model-canvas-container">
-                <Canvas camera={{ position: [0, 0, 5], fov: 50 }}>
+                <Canvas  key={preview} dpr={[1, 1.5]} camera={{ position: [0, 0, 5], fov: 50 }}>
                   <ambientLight intensity={1} />
                   <directionalLight position={[10, 10, 5]} intensity={1} />
                   <Suspense fallback={null}>
